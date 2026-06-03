@@ -585,8 +585,8 @@ Rigidbody:
   m_GameObject: {fileID: 3311311803080157842}
   serializedVersion: 5
   m_Mass: 1000
-  m_LinearDamping: 0.05
-  m_AngularDamping: 1.5
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: -1.2, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -616,10 +616,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CarBehaviour
   inputActions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  fl: {fileID: 2716459193614891142}
-  fr: {fileID: 4795950753765878369}
-  rl: {fileID: 3145262460232535540}
-  rr: {fileID: 1057494946909100755}
+  ruedaDelanteraIzquierda: {fileID: 2716459193614891142}
+  ruedaDelanteraDerecha: {fileID: 4795950753765878369}
+  ruedaTraseraIzquierda: {fileID: 3145262460232535540}
+  ruedaTraseraDerecha: {fileID: 1057494946909100755}
+  ruedaDelanteraIzquierdaGo: {fileID: 6708706858096201184}
+  ruedaDelanteraDerechaGo: {fileID: 856612622373900327}
+  ruedaTraseraIzquierdaGo: {fileID: 8288384950464101879}
+  ruedaTraseraDerechaGo: {fileID: 4163942240364048118}
+  torqueMotor: 3000
+  velocidadMaxima: 20
+  anguloMaximoGiro: 35
+  fuerzaFrenoMano: 8000
+  fuerzaDownforce: 200
+  arrastreAerodinamicoArcade: 1
+  friccionNormalLateral: 1
+  friccionDerrapeLateral: 0.15
+  suavizadoFriccion: 10
+  impulsoArcadeDerrape: 1500
+  asistenciaRotacionDerrape: 2.5
+  fuerzaCambioMarchaInmediato: 2500
+  fuerzaFrenadoSecoLineal: 5000
+  frenoMotorArcade: 1000
+  multiplicadorGiroVisual: 1
   rb: {fileID: 7495443279060062592}
   centerOfMass: {fileID: 0}
   motorPower: 2800
@@ -1628,7 +1647,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3394
+  m_VersionIndex: 3349
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
