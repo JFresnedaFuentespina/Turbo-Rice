@@ -249,23 +249,19 @@ public class CityGenerator : MonoBehaviour
 
     void AssignAddress(GameObject obj, Vector3 position, int x, int z)
     {
-        Address address =
-            obj.GetComponent<Address>();
+        Address address = obj.GetComponent<Address>();
 
         if (address == null)
             return;
 
-        Road nearestRoad =
-            GetRoadFromGrid(x, z);
+        Road nearestRoad = FindNearestRoad(position);
 
         if (nearestRoad == null)
             return;
 
-        string streetName =
-            nearestRoad.streetName;
+        string streetName = nearestRoad.streetName;
 
-        address.streetName =
-            streetName;
+        address.streetName = streetName;
 
         address.number =
             GenerateHouseNumber(
@@ -274,8 +270,7 @@ public class CityGenerator : MonoBehaviour
                 nearestRoad.transform.position
             );
 
-        obj.name =
-            streetName + " " + address.number;
+        obj.name = streetName + " " + address.number;
     }
 
     Road FindNearestRoad(Vector3 position)
@@ -302,7 +297,7 @@ public class CityGenerator : MonoBehaviour
         Road best = null;
         float bestDist = Mathf.Infinity;
 
-        int radius = 1; // vecinos inmediatos
+        int radius = 2; // vecinos inmediatos
 
         for (int dx = -radius; dx <= radius; dx++)
         {

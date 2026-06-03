@@ -272,4 +272,9 @@ public class CarBehaviour : MonoBehaviour
         float anguloDireccionY = esDelantera ? colliderFisico.steerAngle : 0f;
         mallaVisual.transform.rotation = transform.rotation * Quaternion.Euler(anguloRodamientoRuedas, anguloDireccionY, 0f);
     }
+
+    public void GirarCoche()
+    {
+
+    }
 }

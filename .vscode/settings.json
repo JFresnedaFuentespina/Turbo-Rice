@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Turbo-Rice.slnx"
+    "dotnet.defaultSolution": "CarGame.slnx"
 }
