@@ -519,7 +519,7 @@ GameObject:
   - component: {fileID: 6062299077005670728}
   m_Layer: 0
   m_Name: Free Racing Car
-  m_TagString: Untagged
+  m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -554,7 +554,7 @@ Rigidbody:
   m_Mass: 1000
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_CenterOfMass: {x: 0, y: -1.2, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
@@ -567,9 +567,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &6062299077005670728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -587,11 +587,25 @@ MonoBehaviour:
   ruedaDelanteraDerecha: {fileID: 4795950753765878369}
   ruedaTraseraIzquierda: {fileID: 3145262460232535540}
   ruedaTraseraDerecha: {fileID: 1057494946909100755}
+  ruedaDelanteraIzquierdaGo: {fileID: 6708706858096201184}
+  ruedaDelanteraDerechaGo: {fileID: 856612622373900327}
+  ruedaTraseraIzquierdaGo: {fileID: 8288384950464101879}
+  ruedaTraseraDerechaGo: {fileID: 4163942240364048118}
   torqueMotor: 3000
   velocidadMaxima: 20
   anguloMaximoGiro: 35
   fuerzaFrenoMano: 8000
-  fuerzaDownforce: 100
+  fuerzaDownforce: 200
+  arrastreAerodinamicoArcade: 1
+  friccionNormalLateral: 1
+  friccionDerrapeLateral: 0.15
+  suavizadoFriccion: 10
+  impulsoArcadeDerrape: 1500
+  asistenciaRotacionDerrape: 2.5
+  fuerzaCambioMarchaInmediato: 2500
+  fuerzaFrenadoSecoLineal: 5000
+  frenoMotorArcade: 1000
+  multiplicadorGiroVisual: 1
   rb: {fileID: 7495443279060062592}
   centroDeMasa: {fileID: 0}
 --- !u!1 &3962000127133956386
@@ -1576,7 +1590,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3310
+  m_VersionIndex: 3349
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

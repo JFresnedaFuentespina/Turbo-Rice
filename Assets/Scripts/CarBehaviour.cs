@@ -13,142 +13,263 @@ public class CarBehaviour : MonoBehaviour
     public WheelCollider ruedaDelanteraDerecha;
     public WheelCollider ruedaTraseraIzquierda;
     public WheelCollider ruedaTraseraDerecha;
+    public GameObject ruedaDelanteraIzquierdaGo;
+    public GameObject ruedaDelanteraDerechaGo;
+    public GameObject ruedaTraseraIzquierdaGo;
+    public GameObject ruedaTraseraDerechaGo;
 
     [Header("Movimiento Avanzado")]
-    public float torqueMotor = 3000f;      // ¡Fuerza aumentada para salida explosiva!
-    public float velocidadMaxima = 45f;    // Velocidad límite (en m/s, aprox 160 km/h)
-    public float anguloMaximoGiro = 35f;   // Más ángulo para giros cerrados y divertidos
-    public float fuerzaFrenoMano = 8000f;  // Fuerza para clavar las ruedas traseras
-    public float fuerzaDownforce = 100f;    // Mantiene el coche pegado al suelo a alta velocidad
+    public float torqueMotor = 3000f;
+    public float velocidadMaxima = 45f;
+    public float anguloMaximoGiro = 35f;
+    public float fuerzaFrenoMano = 8000f;
+    public float fuerzaDownforce = 100f; 
+    [Tooltip("Fuerza de arrastre aerodinámico directo que frena el chasis al soltar el acelerador (¡Recomendado: 0.5 a 2!)")]
+    public float arrastreAerodinamicoArcade = 1.0f;
+
+
+    [Header("Configuración de Derrape (Drift Arcade)")]
+    [Range(0f, 1f)] public float friccionNormalLateral = 1.0f;
+    [Range(0f, 1f)] public float friccionDerrapeLateral = 0.15f;
+    public float suavizadoFriccion = 8f;
+
+    [Tooltip("Fuerza que empuja el coche hacia adelante mientras derrapas para no perder velocidad")]
+    public float impulsoArcadeDerrape = 1500f;
+
+    [Tooltip("Ayuda al coche a pivotar de lado de forma exagerada y controlada")]
+    public float asistenciaRotacionDerrape = 2.5f;
+
+    [Header("Respuesta Inmediata Arcade")]
+    [Tooltip("Fuerza para neutralizar la inercia al cambiar instantáneamente de marcha adelante/atrás")]
+    public float fuerzaCambioMarchaInmediato = 2500f;
+
+    [Tooltip("Fuerza extra para clavar el coche en seco al frenar en línea recta (sin derrapar)")]
+    public float fuerzaFrenadoSecoLineal = 5000f;
+
+    [Tooltip("Fuerza de frenado automática cuando el jugador suelta el acelerador")]
+    public float frenoMotorArcade = 150f;
+
+    [Header("Ajuste Visual Ruedas")]
+    [Tooltip("Multiplicador para ajustar la velocidad de giro visual de los neumáticos si se ve muy rápido o lento")]
+    public float multiplicadorGiroVisual = 1.0f;
 
     [Header("Configuración")]
     public Rigidbody rb;
-    public Transform centroDeMasa; // Objeto vacío para bajar el centro de gravedad
+    public Transform centroDeMasa;
 
-    void Start()
+    private Vector2 inputMovimiento;
+    private float inputFreno;
+    private float friccionActualTrasera;
+    private bool estaDerrapando = false;
+    private float anguloRodamientoRuedas = 0f;
+
+    // Variables internas temporales para evitar conflictos físicos
+    private float torqueMotorTraseroActual = 0f;
+    private float frenoTraseroActual = 0f;
+    private float frenoDelanteroActual = 0f;
+
+    void Awake()
     {
-        // Configuración de controles
-        moveAction = inputActions.FindAction("Move");
-        moveAction.Enable();
-
-        // Buscamos una acción de freno (puedes mapearla a Espacio o el botón Sur del mando)
-        brakeAction = inputActions.FindAction("Brake");
-        if (brakeAction != null) brakeAction.Enable();
-
         if (rb == null) rb = GetComponent<Rigidbody>();
 
-        // TRUCO CRÍTICO: Bajar el centro de masa evita que el coche vuelque al girar rápido
         if (centroDeMasa != null)
         {
             rb.centerOfMass = transform.InverseTransformPoint(centroDeMasa.position);
         }
-        else
-        {
-            rb.centerOfMass = new Vector3(0, -0.5f, 0); // Ajuste automático si no asignas nada
-        }
+
+        moveAction = inputActions.FindAction("Move");
+        moveAction.Enable();
+
+        brakeAction = inputActions.FindAction("Brake");
+        if (brakeAction != null) brakeAction.Enable();
+
+        friccionActualTrasera = friccionNormalLateral;
+    }
+
+    void Update()
+    {
+        inputMovimiento = moveAction.ReadValue<Vector2>();
+        inputFreno = brakeAction != null ? brakeAction.ReadValue<float>() : 0f;
+
+        CalcularRotacionRuedas();
+        ActualizarRuedasVisuales();
     }
 
     void FixedUpdate()
     {
-        Vector2 input = moveAction.ReadValue<Vector2>();
-        float acelerar = input.y;
-        float girar = input.x;
+        // Resetear las fuerzas lógicas del frame
+        torqueMotorTraseroActual = 0f;
+        frenoTraseroActual = 0f;
+        frenoDelanteroActual = 0f;
 
-        // Leer si el jugador está frenando (Freno de mano / Derrape)
-        bool estaFrenando = false;
-        if (brakeAction != null)
-        {
-            estaFrenando = brakeAction.ReadValue<float>() > 0.1f;
-        }
-        else
-        {
-            // Atajo por si no tienes la acción configurada en el Input Action: se activa con S si vas hacia adelante
-            estaFrenando = (acelerar < 0 && Vector3.Dot(rb.linearVelocity, transform.forward) > 1f);
-        }
+        // Calcular los sistemas físicos autónomos
+        ProcesarGiro();
+        ProcesarMotor();
+        ProcesarFrenoYDerrape();
+        AplicarFisicasArcade();
+        AplicarDownforce();
 
-        AplicarFuerzaSuelo();
-        ControlarMotorYFrenos(acelerar, estaFrenando);
-        ControlarDireccion(girar);
+        // Aplicar de golpe los torques resultantes a las ruedas físicas (Evita sobreescrituras)
+        ruedaTraseraIzquierda.motorTorque = torqueMotorTraseroActual;
+        ruedaTraseraDerecha.motorTorque = torqueMotorTraseroActual;
+
+        ruedaTraseraIzquierda.brakeTorque = frenoTraseroActual;
+        ruedaTraseraDerecha.brakeTorque = frenoTraseroActual;
+        ruedaDelanteraIzquierda.brakeTorque = frenoDelanteroActual;
+        ruedaDelanteraDerecha.brakeTorque = frenoDelanteroActual;
     }
 
-    void ControlarMotorYFrenos(float acelerar, bool estaFrenando)
+    private void ProcesarGiro()
     {
-        float velocidadActual = rb.linearVelocity.magnitude;
-
-        // Detectar si el jugador quiere ir en reversa o frenar con el pedal normal (S / Gatillo Izquierdo)
-        bool quiereIrMarchaAtras = acelerar < 0;
-        bool seEstaMoviendoHaciaAdelante = Vector3.Dot(rb.linearVelocity, transform.forward) > 0.5f;
-
-        // Si pulsa el freno de mano O quiere frenar usando la marcha atrás mientras avanza
-        if (estaFrenando || (quiereIrMarchaAtras && seEstaMoviendoHaciaAdelante))
-        {
-            // 1. Cortamos por completo la fuerza de todos los motores de inmediato
-            ruedaTraseraIzquierda.motorTorque = 0f;
-            ruedaTraseraDerecha.motorTorque = 0f;
-            ruedaDelanteraIzquierda.motorTorque = 0f;
-            ruedaDelanteraDerecha.motorTorque = 0f;
-
-            // 2. ¡Frenazo brutal en las 4 ruedas! (Aumentamos a fuerzaFrenoMano en todo el coche)
-            ruedaTraseraIzquierda.brakeTorque = fuerzaFrenoMano;
-            ruedaTraseraDerecha.brakeTorque = fuerzaFrenoMano;
-            ruedaDelanteraIzquierda.brakeTorque = fuerzaFrenoMano; // Añadido frenado delantero
-            ruedaDelanteraDerecha.brakeTorque = fuerzaFrenoMano;   // Añadido frenado delantero
-
-            // 3. Truco arcade: Aplicamos una contrafuerza física directa para clavar el coche sin deslizar infinitamente
-            rb.AddForce(-rb.linearVelocity * 0.5f, ForceMode.Acceleration);
-            return; // Salimos del método para que no ejecute la lógica de aceleración
-        }
-
-        // LÓGICA DE MOVIMIENTO NORMAL (Aceleración y Marcha Atrás quieto)
-        if (velocidadActual < velocidadMaxima)
-        {
-            // Quitamos todos los frenos para poder movernos libres
-            ruedaTraseraIzquierda.brakeTorque = 0f;
-            ruedaTraseraDerecha.brakeTorque = 0f;
-            ruedaDelanteraIzquierda.brakeTorque = 0f;
-            ruedaDelanteraDerecha.brakeTorque = 0f;
-
-            // Tracción en las 4 ruedas (AWD)
-            ruedaTraseraIzquierda.motorTorque = acelerar * torqueMotor;
-            ruedaTraseraDerecha.motorTorque = acelerar * torqueMotor;
-            ruedaDelanteraIzquierda.motorTorque = acelerar * (torqueMotor * 0.5f);
-            ruedaDelanteraDerecha.motorTorque = acelerar * (torqueMotor * 0.5f);
-        }
-        else
-        {
-            // Límite de velocidad máxima alcanzado
-            ruedaTraseraIzquierda.motorTorque = 0f;
-            ruedaTraseraDerecha.motorTorque = 0f;
-            ruedaDelanteraIzquierda.motorTorque = 0f;
-            ruedaDelanteraDerecha.motorTorque = 0f;
-        }
-
-        // Freno de resistencia ligera (cuando el jugador no toca ningún input)
-        if (Mathf.Abs(acelerar) < 0.05f)
-        {
-            ruedaTraseraIzquierda.brakeTorque = 300f;
-            ruedaTraseraDerecha.brakeTorque = 300f;
-            ruedaDelanteraIzquierda.brakeTorque = 150f;
-            ruedaDelanteraDerecha.brakeTorque = 150f;
-        }
-    }
-
-
-    void ControlarDireccion(float girar)
-    {
-        // Dirección dinámica: a más velocidad, las ruedas giran menos para evitar trompos incontrolables
-        float factorVelocidad = Mathf.InverseLerp(0, velocidadMaxima, rb.linearVelocity.magnitude);
-        float anguloActual = Mathf.Lerp(anguloMaximoGiro, anguloMaximoGiro * 0.4f, factorVelocidad);
-
-        float anguloGiro = girar * anguloActual;
+        float anguloGiro = inputMovimiento.x * anguloMaximoGiro;
         ruedaDelanteraIzquierda.steerAngle = anguloGiro;
         ruedaDelanteraDerecha.steerAngle = anguloGiro;
     }
 
-    void AplicarFuerzaSuelo()
+    private void ProcesarMotor()
+{
+    float velocidadActual = Vector3.Dot(rb.linearVelocity, transform.forward);
+
+    // Control de límite de velocidad máxima
+    if (Mathf.Abs(velocidadActual) > velocidadMaxima)
     {
-        // El Downforce empuja el coche hacia abajo en proporción a su velocidad.
-        // Esto hace que se sienta "pesado" y con agarre en curvas rápidas, pero vuele si salta en una rampa.
-        rb.AddForce(-transform.up * fuerzaDownforce * rb.linearVelocity.magnitude);
+        torqueMotorTraseroActual = 0f;
+        return;
+    }
+
+    // --- SISTEMA DE CAMBIO DE MARCHA ULTRA RÁPIDO ---
+    bool quiereIrAdelantePeroVaAtras = (inputMovimiento.y > 0.1f && velocidadActual < -1f);
+    bool quiereIrAtrasPeroVaAdelante = (inputMovimiento.y < -0.1f && velocidadActual > 1f);
+
+    if (quiereIrAdelantePeroVaAtras || quiereIrAtrasPeroVaAdelante)
+    {
+        frenoTraseroActual = fuerzaFrenoMano;
+        torqueMotorTraseroActual = 0f;
+
+        Vector3 direccionContrarrestar = transform.forward * inputMovimiento.y;
+        rb.AddForce(direccionContrarrestar * fuerzaCambioMarchaInmediato, ForceMode.Force);
+        return; 
+    }
+
+    // --- CONTROL DE DESACELERACIÓN ARCADE SECA ---
+    if (Mathf.Abs(inputMovimiento.y) < 0.1f) 
+    {
+        torqueMotorTraseroActual = 0f;
+        
+        if (Mathf.Abs(velocidadActual) > 0.1f)
+        {
+            // Freno físico en las ruedas
+            frenoTraseroActual = frenoMotorArcade;
+
+            // Esto corta de raíz el deslizamiento infinito de las milésimas.
+            Vector3 fuerzaArrastre = -rb.linearVelocity * arrastreAerodinamicoArcade;
+            rb.AddForce(fuerzaArrastre, ForceMode.Acceleration);
+        }
+        return;
+    }
+
+    torqueMotorTraseroActual = inputMovimiento.y * torqueMotor;
+}
+
+
+    private void ProcesarFrenoYDerrape()
+    {
+        estaDerrapando = (inputFreno > 0.1f && Mathf.Abs(inputMovimiento.x) > 0.2f);
+        float velocidadActual = Vector3.Dot(rb.linearVelocity, transform.forward);
+
+        if (inputFreno > 0.1f)
+        {
+            if (estaDerrapando)
+            {
+                // Al derrapar bloqueamos atrás (Sobreescribe el freno motor si fuese mayor)
+                frenoTraseroActual = Mathf.Max(frenoTraseroActual, fuerzaFrenoMano);
+                frenoDelanteroActual = 0f;
+            }
+            else
+            {
+                // Freno seco: Bloqueamos las 4 ruedas por igual
+                frenoTraseroActual = Mathf.Max(frenoTraseroActual, fuerzaFrenoMano);
+                frenoDelanteroActual = fuerzaFrenoMano;
+
+                if (Mathf.Abs(velocidadActual) > 0.5f)
+                {
+                    Vector3 direccionFrenado = -rb.linearVelocity.normalized;
+                    rb.AddForce(direccionFrenado * fuerzaFrenadoSecoLineal, ForceMode.Force);
+                }
+            }
+        }
+
+        // Modulación de fricción lateral
+        if (estaDerrapando)
+        {
+            friccionActualTrasera = Mathf.Lerp(friccionActualTrasera, friccionDerrapeLateral, Time.fixedDeltaTime * suavizadoFriccion);
+        }
+        else
+        {
+            friccionActualTrasera = Mathf.Lerp(friccionActualTrasera, friccionNormalLateral, Time.fixedDeltaTime * suavizadoFriccion);
+        }
+
+        AjustarFriccionLateralRueda(ruedaTraseraIzquierda, friccionActualTrasera);
+        AjustarFriccionLateralRueda(ruedaTraseraDerecha, friccionActualTrasera);
+    }
+
+    private void AplicarFisicasArcade()
+    {
+        if (!estaDerrapando) return;
+
+        if (inputMovimiento.y > 0.1f)
+        {
+            rb.AddForce(transform.forward * impulsoArcadeDerrape, ForceMode.Force);
+        }
+
+        float direccionGiro = inputMovimiento.x;
+        rb.AddTorque(transform.up * direccionGiro * asistenciaRotacionDerrape, ForceMode.Acceleration);
+    }
+
+    private void AjustarFriccionLateralRueda(WheelCollider rueda, float valorStiffness)
+    {
+        WheelFrictionCurve friccionLateral = rueda.sidewaysFriction;
+        friccionLateral.stiffness = valorStiffness;
+        rueda.sidewaysFriction = friccionLateral;
+    }
+
+    private void AplicarDownforce()
+    {
+        Vector3 fuerzaHaciaAbajo = -transform.up * fuerzaDownforce * rb.linearVelocity.magnitude;
+        rb.AddForce(fuerzaHaciaAbajo);
+    }
+
+    private void CalcularRotacionRuedas()
+    {
+        float velocidadAvanzado = Vector3.Dot(rb.linearVelocity, transform.forward);
+        float radioRueda = ruedaDelanteraIzquierda != null ? ruedaDelanteraIzquierda.radius : 0.35f;
+
+        float deltaAngulo = (velocidadAvanzado / radioRueda) * Time.deltaTime * Mathf.Rad2Deg * multiplicadorGiroVisual;
+        anguloRodamientoRuedas += deltaAngulo;
+
+        if (anguloRodamientoRuedas > 360f) anguloRodamientoRuedas -= 360f;
+        if (anguloRodamientoRuedas < -360f) anguloRodamientoRuedas += 360f;
+    }
+
+    private void ActualizarRuedasVisuales()
+    {
+        SincronizarRueda(ruedaDelanteraIzquierda, ruedaDelanteraIzquierdaGo, true);
+        SincronizarRueda(ruedaDelanteraDerecha, ruedaDelanteraDerechaGo, true);
+        SincronizarRueda(ruedaTraseraIzquierda, ruedaTraseraIzquierdaGo, false);
+        SincronizarRueda(ruedaTraseraDerecha, ruedaTraseraDerechaGo, false);
+    }
+
+    private void SincronizarRueda(WheelCollider colliderFisico, GameObject mallaVisual, bool esDelantera)
+    {
+        if (colliderFisico == null || mallaVisual == null) return;
+
+        Vector3 posicionFisica;
+        Quaternion rotacionFisica;
+
+        colliderFisico.GetWorldPose(out posicionFisica, out rotacionFisica);
+        mallaVisual.transform.position = posicionFisica;
+
+        float anguloDireccionY = esDelantera ? colliderFisico.steerAngle : 0f;
+        mallaVisual.transform.rotation = transform.rotation * Quaternion.Euler(anguloRodamientoRuedas, anguloDireccionY, 0f);
     }
 }

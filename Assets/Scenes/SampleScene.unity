@@ -210,17 +210,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Free Racing Car
       objectReference: {fileID: 0}
-    - target: {fileID: 3311311803080157842, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
-      propertyPath: m_TagString
-      value: Car
-      objectReference: {fileID: 0}
     - target: {fileID: 4220641437465077440, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 596263779}
     - target: {fileID: 4220641437465077440, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: m_VersionIndex
-      value: 3313
+      value: 3352
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1605,11 +1601,25 @@ MonoBehaviour:
   ruedaDelanteraDerecha: {fileID: 0}
   ruedaTraseraIzquierda: {fileID: 0}
   ruedaTraseraDerecha: {fileID: 0}
+  ruedaDelanteraIzquierdaGo: {fileID: 0}
+  ruedaDelanteraDerechaGo: {fileID: 0}
+  ruedaTraseraIzquierdaGo: {fileID: 0}
+  ruedaTraseraDerechaGo: {fileID: 0}
   torqueMotor: 1500
   velocidadMaxima: 45
   anguloMaximoGiro: 30
   fuerzaFrenoMano: 8000
   fuerzaDownforce: 100
+  arrastreAerodinamicoArcade: 1
+  friccionNormalLateral: 1
+  friccionDerrapeLateral: 0.2
+  suavizadoFriccion: 5
+  impulsoArcadeDerrape: 1500
+  asistenciaRotacionDerrape: 2.5
+  fuerzaCambioMarchaInmediato: 2500
+  fuerzaFrenadoSecoLineal: 5000
+  frenoMotorArcade: 150
+  multiplicadorGiroVisual: 1
   rb: {fileID: 1355677714}
   centroDeMasa: {fileID: 0}
 --- !u!54 &1355677714
