@@ -292,41 +292,6 @@ public class CityGenerator : MonoBehaviour
         return nearestRoad;
     }
 
-    Road GetRoadFromGrid(int x, int z)
-    {
-        Road best = null;
-        float bestDist = Mathf.Infinity;
-
-        int radius = 2; // vecinos inmediatos
-
-        for (int dx = -radius; dx <= radius; dx++)
-        {
-            for (int dz = -radius; dz <= radius; dz++)
-            {
-                int nx = x + dx;
-                int nz = z + dz;
-
-                if (nx < 0 || nx >= width || nz < 0 || nz >= height)
-                    continue;
-
-                Road r = roadGrid[nx, nz];
-
-                if (r == null)
-                    continue;
-
-                float dist = dx * dx + dz * dz;
-
-                if (dist < bestDist)
-                {
-                    bestDist = dist;
-                    best = r;
-                }
-            }
-        }
-
-        return best;
-    }
-
     int GenerateHouseNumber(string streetName, Vector3 buildingPos, Vector3 roadPos)
     {
         if (!streetNumbers.ContainsKey(streetName))
