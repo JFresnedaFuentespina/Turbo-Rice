@@ -2061,23 +2061,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1367505059}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2078323733 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8397534445118813308, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
-  m_PrefabInstance: {fileID: 3372881758913286670}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2078323736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2078323733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18d8a373b1c1b9e47979e67a73725389, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TestingCityGenerator
 --- !u!1001 &3372881758913286670
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2133,10 +2116,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8397534445118813308, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2078323736}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

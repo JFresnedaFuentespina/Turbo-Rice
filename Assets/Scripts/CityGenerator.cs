@@ -9,6 +9,10 @@ public class CityGenerator : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public int width = 100;
     public int height = 100;
+    private float seedX;
+    private float seedZ;
+    public bool randomSeed = true;
+    public int seed;
 
     public float noiseScale = 15f;
 
@@ -79,6 +83,18 @@ public class CityGenerator : MonoBehaviour
         roadMap = new bool[width, height];
         roadGrid = new Road[width, height];
 
+        if (randomSeed)
+        {
+            seed = System.Environment.TickCount;
+        }
+
+        Random.InitState(seed);
+
+        seedX = Random.Range(0f, 10000f);
+        seedZ = Random.Range(0f, 10000f);
+
+        Debug.Log("Seed: " + seed);
+
         // 1ª pasada
         for (int x = 0; x < width; x++)
         {
@@ -108,8 +124,8 @@ public class CityGenerator : MonoBehaviour
                 }
                 else if (HasAdjacentRoad(x, z))
                 {
-                    float xCoord = (float)x / width * noiseScale;
-                    float zCoord = (float)z / height * noiseScale;
+                    float xCoord = (float)x / width * noiseScale + seedX;
+                    float zCoord = (float)z / height * noiseScale + seedZ;
 
                     float noiseValue = Mathf.PerlinNoise(xCoord, zCoord);
 
@@ -189,8 +205,8 @@ public class CityGenerator : MonoBehaviour
     }
     bool IsRoad(int x, int z, out bool vertical)
     {
-        float roadNoiseX = Mathf.PerlinNoise(x * 0.03f, 100f);
-        float roadNoiseZ = Mathf.PerlinNoise(100f, z * 0.03f);
+        float roadNoiseX = Mathf.PerlinNoise(x * 0.03f + seedX, 100f);
+        float roadNoiseZ = Mathf.PerlinNoise(100f, z * 0.03f + seedZ);
 
         int offsetX = Mathf.FloorToInt(roadNoiseX * 2);
         int offsetZ = Mathf.FloorToInt(roadNoiseZ * 2);
@@ -343,5 +359,41 @@ public class CityGenerator : MonoBehaviour
         streetNumbers[streetName] += 2;
 
         return finalNumber;
+    }
+
+    public void ResetCity()
+    {
+        // Eliminar calles
+        foreach (Road road in roads)
+        {
+            Destroy(road.gameObject);
+        }
+
+        roads.Clear();
+
+        // Eliminar edificios
+        foreach (Transform child in housesTransformParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Transform child in buildingsTransformParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Transform child in skyscrapersTransformParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Limpiar datos
+        verticalStreetNames.Clear();
+        horizontalStreetNames.Clear();
+        streetNumbers.Clear();
+        usedStreetNames.Clear();
+
+        // Regenerar ciudad
+        StartCoroutine(GenerateCity());
     }
 }
