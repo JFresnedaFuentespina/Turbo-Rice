@@ -26,7 +26,7 @@ public class CityGenerator : MonoBehaviour
     public Transform buildingsTransformParent;
     public Transform skyscrapersTransformParent;
     bool[,] roadMap;
-    Road[,] roadGrid;
+    public Road[,] roadGrid;
 
     public float cellSize = 6f;
     Dictionary<int, string> verticalStreetNames =
@@ -39,8 +39,11 @@ public class CityGenerator : MonoBehaviour
         new Dictionary<string, int>();
     HashSet<string> usedStreetNames =
         new HashSet<string>();
-
+    public Dictionary<Road, List<Address>> roadAddresses =
+        new Dictionary<Road, List<Address>>();
+        
     List<Road> roads = new List<Road>();
+    public bool cityGenerated = false;
     string[] streetTypes =
     {
         "Carrer de",
@@ -138,6 +141,7 @@ public class CityGenerator : MonoBehaviour
                     yield return null;
             }
         }
+        cityGenerated = true;
     }
 
     bool HasAdjacentRoad(int x, int z)
@@ -186,6 +190,9 @@ public class CityGenerator : MonoBehaviour
 
             road.streetName = horizontalStreetNames[key];
         }
+
+        road.gridX = x;
+        road.gridZ = z;
     }
     string GenerateStreetName()
     {
@@ -244,6 +251,15 @@ public class CityGenerator : MonoBehaviour
             obj = Instantiate(skyscraperPrefab, position, rot, skyscrapersTransformParent);
         }
 
+        Renderer rend = obj.GetComponent<Renderer>();
+
+        if (rend != null)
+        {
+            Vector3 p = obj.transform.position;
+            p.y += rend.bounds.size.y * 0.5f;
+            obj.transform.position = p;
+        }
+
         AssignAddress(obj, position, x, z);
     }
 
@@ -259,6 +275,7 @@ public class CityGenerator : MonoBehaviour
         if (nearestRoad == null)
             return;
 
+        address.road = nearestRoad;
         string streetName = nearestRoad.streetName;
 
         address.streetName = streetName;
@@ -271,9 +288,16 @@ public class CityGenerator : MonoBehaviour
             );
 
         obj.name = streetName + " " + address.number;
+
+        if (!roadAddresses.ContainsKey(nearestRoad))
+        {
+            roadAddresses[nearestRoad] = new List<Address>();
+        }
+
+        roadAddresses[nearestRoad].Add(address);
     }
 
-    Road FindNearestRoad(Vector3 position)
+    public Road FindNearestRoad(Vector3 position)
     {
         Road nearestRoad = null;
 
@@ -352,8 +376,29 @@ public class CityGenerator : MonoBehaviour
         horizontalStreetNames.Clear();
         streetNumbers.Clear();
         usedStreetNames.Clear();
+        roadAddresses.Clear();
+
 
         // Regenerar ciudad
         StartCoroutine(GenerateCity());
+    }
+
+    public Address GetRandomAddress()
+    {
+        List<Address> addresses = new();
+
+        addresses.AddRange(
+            housesTransformParent.GetComponentsInChildren<Address>());
+
+        addresses.AddRange(
+            buildingsTransformParent.GetComponentsInChildren<Address>());
+
+        addresses.AddRange(
+            skyscrapersTransformParent.GetComponentsInChildren<Address>());
+
+        if (addresses.Count == 0)
+            return null;
+
+        return addresses[Random.Range(0, addresses.Count)];
     }
 }
