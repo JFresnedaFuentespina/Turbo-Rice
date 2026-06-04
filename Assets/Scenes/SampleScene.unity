@@ -1755,8 +1755,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d488fc9c55ba05c408c204cffab02d6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RouteGenerator
-  startAddress: {fileID: 0}
-  endAddress: {fileID: 0}
 --- !u!114 &2078323740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1816,6 +1814,14 @@ PrefabInstance:
     - target: {fileID: 3453811167039728292, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
+      propertyPath: width
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
+      propertyPath: height
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 8397534445118813308, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
       propertyPath: m_Name

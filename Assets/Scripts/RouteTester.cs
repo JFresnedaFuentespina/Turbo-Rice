@@ -14,6 +14,11 @@ public class RouteTester : MonoBehaviour
         cityGenerator = GetComponent<CityGenerator>();
         routeGenerator = GetComponent<RouteGenerator>();
 
+        StartTest();
+    }
+
+    public void StartTest()
+    {
         StartCoroutine(TestRoute());
     }
 
@@ -26,7 +31,7 @@ public class RouteTester : MonoBehaviour
 
         Address startAddress = cityGenerator.GetRandomAddress();
         Address endAddress = cityGenerator.GetRandomAddress();
-        
+
         Debug.Log("Testing route from " + startAddress.streetName + " " + startAddress.number +
                   " to " + endAddress.streetName + " " + endAddress.number);
         List<Road> roadRoute = routeGenerator.GetRoute(startAddress, endAddress);

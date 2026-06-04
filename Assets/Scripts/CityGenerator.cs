@@ -41,7 +41,7 @@ public class CityGenerator : MonoBehaviour
         new HashSet<string>();
     public Dictionary<Road, List<Address>> roadAddresses =
         new Dictionary<Road, List<Address>>();
-        
+
     List<Road> roads = new List<Road>();
     public bool cityGenerated = false;
     string[] streetTypes =
@@ -83,6 +83,7 @@ public class CityGenerator : MonoBehaviour
 
     IEnumerator GenerateCity()
     {
+        cityGenerated = false;
         roadMap = new bool[width, height];
         roadGrid = new Road[width, height];
 
