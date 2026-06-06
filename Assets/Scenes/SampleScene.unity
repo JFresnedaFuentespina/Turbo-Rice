@@ -137,15 +137,15 @@ PrefabInstance:
       objectReference: {fileID: 900066001}
     - target: {fileID: 2792218741957914664, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.7
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2792218741957914664, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.7
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2792218741957914664, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.7
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2792218741957914664, guid: 133308cdb8794744caaef026bde9e1f0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -407,7 +407,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 52
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -434,7 +434,7 @@ Transform:
   m_GameObject: {fileID: 238076586}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: -4.4}
+  m_LocalPosition: {x: 0, y: 2, z: -5.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1148,7 +1148,7 @@ MonoBehaviour:
     LookAtTarget: {fileID: 36677659}
     CustomLookAtTarget: 1
   Lens:
-    FieldOfView: 52
+    FieldOfView: 60
     OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
@@ -1176,7 +1176,7 @@ Transform:
   m_GameObject: {fileID: 1252128822}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: -4.4}
+  m_LocalPosition: {x: 0, y: 2, z: -5.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1195,10 +1195,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineThirdPersonFollow
   Damping: {x: 0.1, y: 0.5, z: 0.3}
-  ShoulderOffset: {x: 0, y: 0.7, z: 0.1}
-  VerticalArmLength: 0.8
+  ShoulderOffset: {x: 0, y: 0.8, z: 0.1}
+  VerticalArmLength: 1.2
   CameraSide: 1
-  CameraDistance: 4.5
+  CameraDistance: 6
   AvoidObstacles:
     Enabled: 0
     CollisionFilter:
@@ -1726,47 +1726,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1367505059}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2078323733 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8397534445118813308, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
-  m_PrefabInstance: {fileID: 3372881758913286670}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2078323736
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2078323733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18d8a373b1c1b9e47979e67a73725389, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TestingCityGenerator
---- !u!114 &2078323739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2078323733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d488fc9c55ba05c408c204cffab02d6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RouteGenerator
---- !u!114 &2078323740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2078323733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab69e850659e72f40b8ae1d24b405cd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RouteTester
 --- !u!1001 &3372881758913286670
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1816,13 +1775,57 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
-      propertyPath: width
-      value: 50
+      propertyPath: cornerRoadPrefab
+      value: 
+      objectReference: {fileID: 100000, guid: e5a98a4c41704e24eb7e4dafcc7c42b4, type: 3}
+    - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
+      propertyPath: housePrefabs.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
-      propertyPath: height
-      value: 50
-      objectReference: {fileID: 0}
+      propertyPath: 'housePrefabs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 100000, guid: 921b4e33443ab5943afa3c4841e74cae, type: 3}
+    - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
+      propertyPath: 'housePrefabs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 100000, guid: 246bcb60ae5be3744a4ea86bab749f44, type: 3}
+    - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
+      propertyPath: 'housePrefabs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 100000, guid: 0064eb002f3790247969e12119bbf9d2, type: 3}
+    - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
+      propertyPath: 'housePrefabs.Array.data[3]'
+      value: 
+      objectReference: {fileID: 100000, guid: 8c3b216cc2b6dc04496d15009bc913cd, type: 3}
+    - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
+      propertyPath: 'housePrefabs.Array.data[4]'
+      value: 
+      objectReference: {fileID: 100000, guid: 3a0bc997d3424474696ad8d2e7d684ab, type: 3}
+    - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
+      propertyPath: 'housePrefabs.Array.data[5]'
+      value: 
+      objectReference: {fileID: 100000, guid: 11c264ca1bac5d74d883c776435fa684, type: 3}
+    - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
+      propertyPath: 'housePrefabs.Array.data[6]'
+      value: 
+      objectReference: {fileID: 100000, guid: e2ffb9183a7dce445adfb3d2d4d7bfd6, type: 3}
+    - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
+      propertyPath: 'housePrefabs.Array.data[7]'
+      value: 
+      objectReference: {fileID: 100000, guid: 2dbee28eacba7dd42845e0153c4da642, type: 3}
+    - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
+      propertyPath: 'housePrefabs.Array.data[8]'
+      value: 
+      objectReference: {fileID: 100000, guid: 63243ce2fd6113e4384abc2d949cb799, type: 3}
+    - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
+      propertyPath: 'housePrefabs.Array.data[9]'
+      value: 
+      objectReference: {fileID: 100000, guid: 10ba41f0223c3104bad126af2b380971, type: 3}
+    - target: {fileID: 3479113749048824804, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
+      propertyPath: 'housePrefabs.Array.data[10]'
+      value: 
+      objectReference: {fileID: 100000, guid: b8365ae9a93a2e8498ae3c2646f3c455, type: 3}
     - target: {fileID: 8397534445118813308, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
       propertyPath: m_Name
       value: CityGenerator
@@ -1830,16 +1833,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8397534445118813308, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2078323736}
-    - targetCorrespondingSourceObject: {fileID: 8397534445118813308, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2078323739}
-    - targetCorrespondingSourceObject: {fileID: 8397534445118813308, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2078323740}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dad551d0cad884041b1143bb7783f8bf, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using UnityEngine.UIElements.Experimental;
 
 public class CityGenerator : MonoBehaviour
 {
@@ -14,12 +12,15 @@ public class CityGenerator : MonoBehaviour
     public bool randomSeed = true;
     public int seed;
 
+    float verticalOffsetRoad = 0.02f;
+    float verticalOffsetCornerRoad = 0.05f;
     public float noiseScale = 15f;
 
     public GameObject roadPrefab;
-    public GameObject housePrefab;
-    public GameObject buildingPrefab;
-    public GameObject skyscraperPrefab;
+    public GameObject cornerRoadPrefab;
+    public List<GameObject> housePrefabs;
+    public List<GameObject> buildingPrefabs;
+    public List<GameObject> skyscraperPrefabs;
 
     public Transform streetsTransformParent;
     public Transform housesTransformParent;
@@ -145,6 +146,23 @@ public class CityGenerator : MonoBehaviour
         cityGenerated = true;
     }
 
+    bool IsIntersection(int x, int z)
+    {
+        bool left = x > 0 && roadMap[x - 1, z];
+        bool right = x < width - 1 && roadMap[x + 1, z];
+        bool up = z < height - 1 && roadMap[x, z + 1];
+        bool down = z > 0 && roadMap[x, z - 1];
+
+        int connections = 0;
+
+        if (left) connections++;
+        if (right) connections++;
+        if (up) connections++;
+        if (down) connections++;
+
+        return connections >= 3;
+    }
+
     bool HasAdjacentRoad(int x, int z)
     {
         // izquierda
@@ -168,7 +186,9 @@ public class CityGenerator : MonoBehaviour
 
     void GenerateStreet(int x, int z, bool vertical, Vector3 position)
     {
-        GameObject r = Instantiate(roadPrefab, position + Vector3.up * 0.02f, Quaternion.identity, streetsTransformParent);
+        float verticalOffset = IsIntersection(x, z) ? verticalOffsetCornerRoad : verticalOffsetRoad;
+        GameObject prefab = IsIntersection(x, z) ? cornerRoadPrefab : roadPrefab;
+        GameObject r = Instantiate(prefab, position + Vector3.up * verticalOffset, Quaternion.identity, streetsTransformParent);
         Road road = r.GetComponent<Road>();
         roadGrid[x, z] = road;
         roads.Add(road);
@@ -192,6 +212,11 @@ public class CityGenerator : MonoBehaviour
             road.streetName = horizontalStreetNames[key];
         }
 
+        if (!IsIntersection(x, z))
+        {
+            road.transform.rotation =
+                Quaternion.Euler(0f, vertical ? 0f : 90f, 0f);
+        }
         road.gridX = x;
         road.gridZ = z;
     }
@@ -241,37 +266,58 @@ public class CityGenerator : MonoBehaviour
 
         if (value < 0.4f)
         {
-            obj = Instantiate(housePrefab, position, rot, housesTransformParent);
+            GameObject randomHouse = SelectRandomHouse();
+            obj = Instantiate(randomHouse, position, rot, housesTransformParent);
         }
         else if (value < 0.7f)
         {
-            obj = Instantiate(buildingPrefab, position, rot, buildingsTransformParent);
+            GameObject randomBuilding = SelectRandomBuilding();
+            obj = Instantiate(randomBuilding, position, rot, buildingsTransformParent);
         }
         else
         {
-            obj = Instantiate(skyscraperPrefab, position, rot, skyscrapersTransformParent);
+            GameObject randomSkyscraper = SelectRandomSkyscraper();
+            obj = Instantiate(randomSkyscraper, position, rot, skyscrapersTransformParent);
         }
 
         Renderer rend = obj.GetComponent<Renderer>();
 
-        if (rend != null)
-        {
-            Vector3 p = obj.transform.position;
-            p.y += rend.bounds.size.y * 0.5f;
-            obj.transform.position = p;
-        }
+        // if (rend != null)
+        // {
+        //     Vector3 p = obj.transform.position;
+        //     p.y += rend.bounds.size.y * 0.5f;
+        //     obj.transform.position = p;
+        // }
 
         AssignAddress(obj, position, x, z);
     }
 
+    public GameObject SelectRandomHouse()
+    {
+        GameObject obj = housePrefabs[Random.Range(0, housePrefabs.Count)];
+        return obj;
+    }
+
+    public GameObject SelectRandomBuilding()
+    {
+        GameObject obj = buildingPrefabs[Random.Range(0, buildingPrefabs.Count)];
+        return obj;
+    }
+    public GameObject SelectRandomSkyscraper()
+    {
+        GameObject obj = skyscraperPrefabs[Random.Range(0, skyscraperPrefabs.Count)];
+        return obj;
+    }
+
     void AssignAddress(GameObject obj, Vector3 position, int x, int z)
     {
+        OrientBuilding(obj, x, z);
         Address address = obj.GetComponent<Address>();
 
         if (address == null)
             return;
 
-        Road nearestRoad = FindNearestRoad(position);
+        Road nearestRoad = GetAdjacentRoad(x, z);
 
         if (nearestRoad == null)
             return;
@@ -296,6 +342,36 @@ public class CityGenerator : MonoBehaviour
         }
 
         roadAddresses[nearestRoad].Add(address);
+    }
+    void OrientBuilding(GameObject obj, int x, int z)
+    {
+        if (x > 0 && roadGrid[x - 1, z] != null)
+            obj.transform.rotation = Quaternion.Euler(0, -90, 0);
+
+        else if (x < width - 1 && roadGrid[x + 1, z] != null)
+            obj.transform.rotation = Quaternion.Euler(0, 90, 0);
+
+        else if (z > 0 && roadGrid[x, z - 1] != null)
+            obj.transform.rotation = Quaternion.Euler(0, 180, 0);
+
+        else if (z < height - 1 && roadGrid[x, z + 1] != null)
+            obj.transform.rotation = Quaternion.Euler(0, 0, 0);
+    }
+    Road GetAdjacentRoad(int x, int z)
+    {
+        if (x > 0 && roadGrid[x - 1, z] != null)
+            return roadGrid[x - 1, z];
+
+        if (x < width - 1 && roadGrid[x + 1, z] != null)
+            return roadGrid[x + 1, z];
+
+        if (z > 0 && roadGrid[x, z - 1] != null)
+            return roadGrid[x, z - 1];
+
+        if (z < height - 1 && roadGrid[x, z + 1] != null)
+            return roadGrid[x, z + 1];
+
+        return null;
     }
 
     public Road FindNearestRoad(Vector3 position)
