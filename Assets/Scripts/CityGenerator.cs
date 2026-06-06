@@ -100,7 +100,7 @@ public class CityGenerator : MonoBehaviour
 
         Debug.Log("Seed: " + seed);
 
-        // 1ª pasada
+        // 1ª pasada - Determinar mapa de calles
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < height; z++)
@@ -112,23 +112,35 @@ public class CityGenerator : MonoBehaviour
             yield return null;
         }
 
-        // 2ª pasada
+        // 2ª pasada - Instanciar todas las calles y rellenar roadGrid
         int counter = 0;
-
         for (int x = 0; x < width; x++)
         {
             for (int z = 0; z < height; z++)
             {
-                Vector3 position = new Vector3(x * cellSize, 0, z * cellSize);
-
                 if (roadMap[x, z])
                 {
+                    Vector3 position = new Vector3(x * cellSize, 0, z * cellSize);
                     bool vertical;
                     IsRoad(x, z, out vertical);
                     GenerateStreet(x, z, vertical, position);
                 }
-                else if (HasAdjacentRoad(x, z))
+
+                counter++;
+                if (counter % 200 == 0)
+                    yield return null;
+            }
+        }
+
+        // 3ª pasada - Instanciar todos los edificios y asignar direcciones (ahora con roadGrid completo)
+        counter = 0;
+        for (int x = 0; x < width; x++)
+        {
+            for (int z = 0; z < height; z++)
+            {
+                if (!roadMap[x, z] && HasAdjacentRoad(x, z))
                 {
+                    Vector3 position = new Vector3(x * cellSize, 0, z * cellSize);
                     float xCoord = (float)x / width * noiseScale + seedX;
                     float zCoord = (float)z / height * noiseScale + seedZ;
 
@@ -138,7 +150,6 @@ public class CityGenerator : MonoBehaviour
                 }
 
                 counter++;
-
                 if (counter % 200 == 0)
                     yield return null;
             }
@@ -311,8 +322,24 @@ public class CityGenerator : MonoBehaviour
 
     void AssignAddress(GameObject obj, Vector3 position, int x, int z)
     {
-        OrientBuilding(obj, x, z);
         Address address = obj.GetComponent<Address>();
+        Address[] allAddresses = obj.GetComponentsInChildren<Address>(true);
+
+        if (address == null)
+        {
+            if (allAddresses.Length > 0)
+            {
+                address = obj.AddComponent<Address>();
+            }
+        }
+
+        foreach (var addr in allAddresses)
+        {
+            if (addr != address && addr != null)
+            {
+                DestroyImmediate(addr);
+            }
+        }
 
         if (address == null)
             return;
@@ -321,6 +348,8 @@ public class CityGenerator : MonoBehaviour
 
         if (nearestRoad == null)
             return;
+
+        OrientBuilding(obj, nearestRoad, x, z);
 
         address.road = nearestRoad;
         string streetName = nearestRoad.streetName;
@@ -343,18 +372,21 @@ public class CityGenerator : MonoBehaviour
 
         roadAddresses[nearestRoad].Add(address);
     }
-    void OrientBuilding(GameObject obj, int x, int z)
+    void OrientBuilding(GameObject obj, Road road, int x, int z)
     {
-        if (x > 0 && roadGrid[x - 1, z] != null)
+        if (road == null)
+            return;
+
+        int rx = road.gridX;
+        int rz = road.gridZ;
+
+        if (rx < x)
             obj.transform.rotation = Quaternion.Euler(0, -90, 0);
-
-        else if (x < width - 1 && roadGrid[x + 1, z] != null)
+        else if (rx > x)
             obj.transform.rotation = Quaternion.Euler(0, 90, 0);
-
-        else if (z > 0 && roadGrid[x, z - 1] != null)
+        else if (rz < z)
             obj.transform.rotation = Quaternion.Euler(0, 180, 0);
-
-        else if (z < height - 1 && roadGrid[x, z + 1] != null)
+        else if (rz > z)
             obj.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
     Road GetAdjacentRoad(int x, int z)

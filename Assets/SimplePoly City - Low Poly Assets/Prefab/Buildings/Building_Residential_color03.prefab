@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8851, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5708867629915339023}
@@ -118,8 +118,6 @@ GameObject:
   - component: {fileID: 5708867629915339023}
   - component: {fileID: 3589076315532372646}
   - component: {fileID: 3129113336803606627}
-  - component: {fileID: 52491310880141370}
-  - component: {fileID: 9164634731304291301}
   m_Layer: 0
   m_Name: Building_Residential_color03
   m_TagString: Untagged
@@ -199,33 +197,3 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &52491310880141370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6963682959877777013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee8e1fae750dc5e419dcde7cca68ff5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Address
-  streetName: 
-  number: 0
-  road: {fileID: 0}
---- !u!114 &9164634731304291301
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6963682959877777013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee8e1fae750dc5e419dcde7cca68ff5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Address
-  streetName: 
-  number: 0
-  road: {fileID: 0}

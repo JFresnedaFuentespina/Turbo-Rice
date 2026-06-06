@@ -118,7 +118,6 @@ GameObject:
   - component: {fileID: 3230082661494045050}
   - component: {fileID: 8665559364267183027}
   - component: {fileID: 6282287576116400949}
-  - component: {fileID: 2156711204280882292}
   m_Layer: 0
   m_Name: Building Sky_small_color02
   m_TagString: Untagged
@@ -198,18 +197,3 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2156711204280882292
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2029054669183495634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee8e1fae750dc5e419dcde7cca68ff5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Address
-  streetName: 
-  number: 0
-  road: {fileID: 0}
