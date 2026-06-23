@@ -141,7 +141,7 @@ Transform:
   m_GameObject: {fileID: 4877470174520892346}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6, y: 25, z: 357}
+  m_LocalPosition: {x: -11.4, y: 25, z: 357}
   m_LocalScale: {x: 2, y: 50, z: 714}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -194,7 +194,7 @@ Transform:
   m_GameObject: {fileID: 5301814422696254896}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 357, y: 25, z: 715}
+  m_LocalPosition: {x: 357, y: 25, z: 741.3}
   m_LocalScale: {x: 714, y: 50, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -429,20 +429,11 @@ MonoBehaviour:
   seed: 0
   noiseScale: 15
   roadPrefab: {fileID: 100000, guid: 4f32dfddb033d3e40b5841bc53cc1689, type: 3}
-  cornerRoadPrefab: {fileID: 100000, guid: 47ef019eb3bddab469e56e5a31eebf68, type: 3}
+  cornerRoadPrefab: {fileID: 100000, guid: e5a98a4c41704e24eb7e4dafcc7c42b4, type: 3}
   housePrefabs:
-  - {fileID: 100000, guid: 66131d8838f42f545a30ce8606ce5365, type: 3}
-  - {fileID: 100000, guid: 1f284b42849610642bfb5d418a57840b, type: 3}
-  - {fileID: 100000, guid: 92dcd407350173049ab8c86482fadf42, type: 3}
-  - {fileID: 100000, guid: 142c9543c08ae014bad9d177ad54a989, type: 3}
-  - {fileID: 100000, guid: 8c3b216cc2b6dc04496d15009bc913cd, type: 3}
-  - {fileID: 100000, guid: 3a0bc997d3424474696ad8d2e7d684ab, type: 3}
-  - {fileID: 100000, guid: 11c264ca1bac5d74d883c776435fa684, type: 3}
-  - {fileID: 100000, guid: e2ffb9183a7dce445adfb3d2d4d7bfd6, type: 3}
-  - {fileID: 100000, guid: 2dbee28eacba7dd42845e0153c4da642, type: 3}
-  - {fileID: 100000, guid: 63243ce2fd6113e4384abc2d949cb799, type: 3}
-  - {fileID: 100000, guid: 10ba41f0223c3104bad126af2b380971, type: 3}
-  - {fileID: 100000, guid: b8365ae9a93a2e8498ae3c2646f3c455, type: 3}
+  - {fileID: 100000, guid: 921b4e33443ab5943afa3c4841e74cae, type: 3}
+  - {fileID: 100000, guid: 246bcb60ae5be3744a4ea86bab749f44, type: 3}
+  - {fileID: 100000, guid: 0064eb002f3790247969e12119bbf9d2, type: 3}
   buildingPrefabs:
   - {fileID: 100000, guid: 6a690a756dbd65141a09a3ad7fafacc4, type: 3}
   - {fileID: 100000, guid: cc0981408e7c8db4f9f80a57938fd5e3, type: 3}
