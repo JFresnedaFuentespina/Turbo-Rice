@@ -6,6 +6,7 @@ public class PlayerControllerTPS : MonoBehaviour
     [Header("References")]
     public Transform cameraTarget;
     public Animator animator;
+    private CharacterController controller;
 
     [Header("Movement")]
     public float moveSpeed = 5f;
@@ -14,10 +15,8 @@ public class PlayerControllerTPS : MonoBehaviour
     [Header("Gravity")]
     public float gravity = -20f;
     public float jumpHeight = 1.5f;
-
-    private CharacterController controller;
-
     private float velocityY;
+
 
     void Start()
     {
