@@ -17,7 +17,7 @@ public class CityGenerator : MonoBehaviour
     public float noiseScale = 15f;
 
     public GameObject roadPrefab;
-    public GameObject cornerRoadPrefab;
+    public GameObject intersectionRoadPrefab;
     public List<GameObject> housePrefabs;
     public List<GameObject> buildingPrefabs;
     public List<GameObject> skyscraperPrefabs;
@@ -164,14 +164,24 @@ public class CityGenerator : MonoBehaviour
         bool up = z < height - 1 && roadMap[x, z + 1];
         bool down = z > 0 && roadMap[x, z - 1];
 
-        int connections = 0;
+        // Cruce normal
+        if ((left && right) && (up && down))
+            return true;
 
-        if (left) connections++;
-        if (right) connections++;
-        if (up) connections++;
-        if (down) connections++;
+        // Bordes del mapa
+        if (x == 0 && right && up && down)
+            return true;
 
-        return connections >= 3;
+        if (x == width - 1 && left && up && down)
+            return true;
+
+        if (z == 0 && left && right && up)
+            return true;
+
+        if (z == height - 1 && left && right && down)
+            return true;
+
+        return false;
     }
 
     bool HasAdjacentRoad(int x, int z)
@@ -198,7 +208,7 @@ public class CityGenerator : MonoBehaviour
     void GenerateStreet(int x, int z, bool vertical, Vector3 position)
     {
         float verticalOffset = IsIntersection(x, z) ? verticalOffsetCornerRoad : verticalOffsetRoad;
-        GameObject prefab = IsIntersection(x, z) ? cornerRoadPrefab : roadPrefab;
+        GameObject prefab = IsIntersection(x, z) ? intersectionRoadPrefab : roadPrefab;
         GameObject r = Instantiate(prefab, position + Vector3.up * verticalOffset, Quaternion.identity, streetsTransformParent);
         Road road = r.GetComponent<Road>();
         roadGrid[x, z] = road;

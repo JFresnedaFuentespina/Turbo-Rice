@@ -429,7 +429,7 @@ MonoBehaviour:
   seed: 0
   noiseScale: 15
   roadPrefab: {fileID: 100000, guid: 4f32dfddb033d3e40b5841bc53cc1689, type: 3}
-  cornerRoadPrefab: {fileID: 100000, guid: e5a98a4c41704e24eb7e4dafcc7c42b4, type: 3}
+  intersectionRoadPrefab: {fileID: 100000, guid: e5a98a4c41704e24eb7e4dafcc7c42b4, type: 3}
   housePrefabs:
   - {fileID: 100000, guid: 921b4e33443ab5943afa3c4841e74cae, type: 3}
   - {fileID: 100000, guid: 246bcb60ae5be3744a4ea86bab749f44, type: 3}
