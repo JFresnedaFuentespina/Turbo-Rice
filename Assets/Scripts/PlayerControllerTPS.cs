@@ -27,10 +27,7 @@ public class PlayerControllerTPS : MonoBehaviour
     void Update()
     {
         // INPUT
-        float inputH = Input.GetAxisRaw("Horizontal");
-        float inputV = Input.GetAxisRaw("Vertical");
-
-        Vector2 input = new Vector2(inputH, inputV);
+        Vector2 input = GetInput();
 
         if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
         {
@@ -38,11 +35,35 @@ public class PlayerControllerTPS : MonoBehaviour
             velocityY = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
+        // DIRECCIÓN RELATIVA A CÁMARA
+        Vector3 move = GetDirectionCamera(input);
+
+        // ROTAR PERSONAJE
+        RotatePlayer(input, move);
+
+        // SALTO
+        CheckJump();
+
+        // ANIMACIÓN MOVIMIENTO
+        AnimateMove(input);
+    }
+
+    Vector2 GetInput()
+    {
+        float inputH = Input.GetAxisRaw("Horizontal");
+        float inputV = Input.GetAxisRaw("Vertical");
+
+        Vector2 input = new Vector2(inputH, inputV);
+
         // DEADZONE (CLAVE PARA EVITAR MOVIMIENTO INVISIBLE)
         if (input.magnitude < 0.1f)
             input = Vector2.zero;
 
-        // DIRECCIÓN RELATIVA A CÁMARA
+        return input;
+    }
+
+    Vector3 GetDirectionCamera(Vector2 input)
+    {
         Vector3 camForward = cameraTarget.forward;
         camForward.y = 0;
         camForward.Normalize();
@@ -58,8 +79,11 @@ public class PlayerControllerTPS : MonoBehaviour
 
         // MOVIMIENTO
         controller.Move(move * moveSpeed * Time.deltaTime);
+        return move;
+    }
 
-        // ROTACIÓN SOLO SI HAY INPUT REAL
+    void RotatePlayer(Vector2 input, Vector3 move)
+    {
         if (input.magnitude > 0.1f)
         {
             Quaternion targetRot = Quaternion.LookRotation(move);
@@ -69,7 +93,10 @@ public class PlayerControllerTPS : MonoBehaviour
                 rotationSpeed * Time.deltaTime
             );
         }
+    }
 
+    void CheckJump()
+    {
         // SALTO
         if (controller.isGrounded)
         {
@@ -80,13 +107,15 @@ public class PlayerControllerTPS : MonoBehaviour
         {
             velocityY += gravity * Time.deltaTime;
         }
-
         controller.Move(Vector3.up * velocityY * Time.deltaTime);
+    }
 
-        // ANIMACIÓN (IMPORTANTE: SOLO INPUT, NO MOVIMIENTO FINAL)
+    void AnimateMove(Vector2 input)
+    {
         animator.SetFloat("MoveX", input.x, 0.1f, Time.deltaTime);
         animator.SetFloat("MoveY", input.y, 0.1f, Time.deltaTime);
 
         animator.SetBool("Grounded", controller.isGrounded);
+
     }
 }
