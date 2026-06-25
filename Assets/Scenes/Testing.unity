@@ -510,6 +510,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4247319944578209675, guid: ebe284e878dfdd44086268c627ab75d3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2357923689382419808}
+    - targetCorrespondingSourceObject: {fileID: 4247319944578209675, guid: ebe284e878dfdd44086268c627ab75d3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2357923689382419809}
   m_SourcePrefab: {fileID: 100100000, guid: ebe284e878dfdd44086268c627ab75d3, type: 3}
 --- !u!1 &2357923689382419807 stripped
 GameObject:
@@ -537,6 +540,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.1, y: 0.1, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2357923689382419809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2357923689382419807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ec5fc28a169e484891aaadd5c289f29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FloatingArrow
+  amplitude: 0.2
+  frequency: 1.5
+  rotationAmplitude: 5
+  rotationSpeed: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

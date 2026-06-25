@@ -6,7 +6,8 @@ public class FloatingArrow : MonoBehaviour
     public float amplitude = 0.2f;
     public float frequency = 1.5f;
 
-    [Header("Rotation (optional)")]
+    [Header("Rotation")]
+    public bool rotate = true;
     public float rotationAmplitude = 5f;
     public float rotationSpeed = 1f;
 
@@ -24,6 +25,8 @@ public class FloatingArrow : MonoBehaviour
         // Flotación en Y
         float floatOffset = Mathf.Sin(Time.time * frequency) * amplitude;
         transform.position = startPos + new Vector3(0f, floatOffset, 0f);
+
+        if (!rotate) return;
 
         // Rotación suave tipo "hover retro"
         float rotOffset = Mathf.Sin(Time.time * rotationSpeed) * rotationAmplitude;
