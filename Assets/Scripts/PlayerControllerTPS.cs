@@ -18,7 +18,6 @@ public class PlayerControllerTPS : MonoBehaviour
     private CharacterController controller;
 
     private float velocityY;
-    private bool jumpPressed;
 
     void Start()
     {
@@ -33,8 +32,11 @@ public class PlayerControllerTPS : MonoBehaviour
 
         Vector2 input = new Vector2(inputH, inputV);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            jumpPressed = true;
+        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
+        {
+            animator.SetTrigger("Jump");
+            velocityY = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
 
         // DEADZONE (CLAVE PARA EVITAR MOVIMIENTO INVISIBLE)
         if (input.magnitude < 0.1f)
@@ -68,17 +70,17 @@ public class PlayerControllerTPS : MonoBehaviour
             );
         }
 
-        // GRAVEDAD
-        if (controller.isGrounded && velocityY < 0)
-            velocityY = -2f;
-
-        if (jumpPressed && controller.isGrounded)
+        // SALTO
+        if (controller.isGrounded)
         {
-            velocityY = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            jumpPressed = false;
+            if (velocityY < 0)
+                velocityY = -0.5f;
+        }
+        else
+        {
+            velocityY += gravity * Time.deltaTime;
         }
 
-        velocityY += gravity * Time.deltaTime;
         controller.Move(Vector3.up * velocityY * Time.deltaTime);
 
         // ANIMACIÓN (IMPORTANTE: SOLO INPUT, NO MOVIMIENTO FINAL)

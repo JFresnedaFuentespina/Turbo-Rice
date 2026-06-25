@@ -150,6 +150,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 27.809998
       objectReference: {fileID: 0}
+    - target: {fileID: -3157292743999051403, guid: 1b7dc24b27c56da4a9467791791c7554, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.5935504
+      objectReference: {fileID: 0}
+    - target: {fileID: -3157292743999051403, guid: 1b7dc24b27c56da4a9467791791c7554, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7771063
+      objectReference: {fileID: 0}
+    - target: {fileID: -3157292743999051403, guid: 1b7dc24b27c56da4a9467791791c7554, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.16632673
+      objectReference: {fileID: 0}
+    - target: {fileID: -3157292743999051403, guid: 1b7dc24b27c56da4a9467791791c7554, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.12704024
+      objectReference: {fileID: 0}
+    - target: {fileID: -3157292743999051403, guid: 1b7dc24b27c56da4a9467791791c7554, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -105.255
+      objectReference: {fileID: 0}
+    - target: {fileID: -3157292743999051403, guid: 1b7dc24b27c56da4a9467791791c7554, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -24.161987
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 1b7dc24b27c56da4a9467791791c7554, type: 3}
       propertyPath: m_Name
       value: ferreret2
@@ -267,9 +291,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1b7dc24b27c56da4a9467791791c7554, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5282786300989457339}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1b7dc24b27c56da4a9467791791c7554, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7606972171728953561}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1b7dc24b27c56da4a9467791791c7554, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4769426091105425131}
@@ -400,22 +421,6 @@ MonoBehaviour:
   rotationSpeed: 12
   gravity: -20
   jumpHeight: 1.5
---- !u!114 &7606972171728953561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1032394767430878028}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e3aa3c8417eb044abc82e0ba5e54b98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerBehaviour
-  velocity: 5
-  rotationSpeed: 160
-  jumpForce: 6
-  cameraTarget: {fileID: 218684406304743357}
 --- !u!114 &4769426091105425131
 MonoBehaviour:
   m_ObjectHideFlags: 0

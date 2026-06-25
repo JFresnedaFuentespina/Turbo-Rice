@@ -35,17 +35,17 @@ public class RouteTester : MonoBehaviour
         Debug.Log("Testing route from " + startAddress.streetName + " " + startAddress.number +
                   " to " + endAddress.streetName + " " + endAddress.number);
         List<Road> roadRoute = routeGenerator.GetRoute(startAddress, endAddress);
-        if (roadRoute != null)
-        {
-            Debug.Log("Route found with " + roadRoute.Count + " roads.");
-            foreach (Road road in roadRoute)
-            {
-                Debug.Log(road.streetName + " at grid (" + road.gridX + ", " + road.gridZ + ")");
-            }
-        }
-        else
-        {
-            Debug.Log("No route found.");
-        }
+        // if (roadRoute != null)
+        // {
+        //     Debug.Log("Route found with " + roadRoute.Count + " roads.");
+        //     foreach (Road road in roadRoute)
+        //     {
+        //         Debug.Log(road.streetName + " at grid (" + road.gridX + ", " + road.gridZ + ")");
+        //     }
+        // }
+        // else
+        // {
+        //     Debug.Log("No route found.");
+        // }
     }
 }
