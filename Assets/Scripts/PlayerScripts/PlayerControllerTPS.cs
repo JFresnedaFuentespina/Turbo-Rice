@@ -11,11 +11,16 @@ public class PlayerControllerTPS : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed = 5f;
     public float rotationSpeed = 12f;
+    public bool isRunning = false;
 
     [Header("Gravity")]
     public float gravity = -20f;
     public float jumpHeight = 1.5f;
     private float velocityY;
+
+    [Header("Multipliers")]
+    public float airSpeedMultiplier = 1.3f;
+    public float runSpeedMultiplier = 1.5f;
 
 
     void Start()
@@ -32,6 +37,11 @@ public class PlayerControllerTPS : MonoBehaviour
         {
             animator.SetTrigger("Jump");
             velocityY = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            isRunning = true;
         }
 
         // DIRECCIÓN RELATIVA A CÁMARA
@@ -76,8 +86,20 @@ public class PlayerControllerTPS : MonoBehaviour
         if (move.sqrMagnitude > 1f)
             move.Normalize();
 
+        float speed = moveSpeed;
+
+        if (!controller.isGrounded)
+        {
+            speed *= airSpeedMultiplier;
+        }
+
+        if (isRunning)
+        {
+            speed *= runSpeedMultiplier;
+        }
+
         // MOVIMIENTO
-        controller.Move(move * moveSpeed * Time.deltaTime);
+        controller.Move(move * speed * Time.deltaTime);
         return move;
     }
 

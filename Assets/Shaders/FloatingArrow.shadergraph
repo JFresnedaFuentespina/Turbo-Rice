@@ -2230,8 +2230,8 @@
     "m_ObjectId": "75120f6707884893be9fdb9ef093ec75",
     "m_Title": "Base color + texture",
     "m_Position": {
-        "x": -759.9999389648438,
-        "y": 616.0000610351563
+        "x": -760.0,
+        "y": 616.0
     }
 }
 
@@ -2842,7 +2842,7 @@
     "m_ObjectId": "a38d65e2157a4349b6ebb691b535fb5d",
     "m_Title": "Calculate RGB Texture UVs",
     "m_Position": {
-        "x": -1500.0001220703125,
+        "x": -1500.0,
         "y": -374.0000305175781
     }
 }

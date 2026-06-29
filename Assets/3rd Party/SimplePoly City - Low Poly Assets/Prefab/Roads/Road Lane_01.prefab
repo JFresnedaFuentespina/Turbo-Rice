@@ -225,18 +225,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 400000}
     m_Modifications:
     - target: {fileID: 3583266957525536049, guid: ebe284e878dfdd44086268c627ab75d3, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 3583266957525536049, guid: ebe284e878dfdd44086268c627ab75d3, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 3583266957525536049, guid: ebe284e878dfdd44086268c627ab75d3, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 3583266957525536049, guid: ebe284e878dfdd44086268c627ab75d3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -276,17 +264,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3583266957525536049, guid: ebe284e878dfdd44086268c627ab75d3, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4247319944578209675, guid: ebe284e878dfdd44086268c627ab75d3, type: 3}
       propertyPath: m_Name
       value: flecha
-      objectReference: {fileID: 0}
-    - target: {fileID: 4247319944578209675, guid: ebe284e878dfdd44086268c627ab75d3, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
