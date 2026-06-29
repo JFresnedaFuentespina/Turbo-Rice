@@ -7,6 +7,9 @@ public class CityGenerator : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public int width = 100;
     public int height = 100;
+
+    public int chunkSize = 16;
+    public Dictionary<Vector2Int, Transform> chunks = new Dictionary<Vector2Int, Transform>();
     private float seedX;
     private float seedZ;
     public bool randomSeed = true;
@@ -21,11 +24,6 @@ public class CityGenerator : MonoBehaviour
     public List<GameObject> housePrefabs;
     public List<GameObject> buildingPrefabs;
     public List<GameObject> skyscraperPrefabs;
-
-    public Transform streetsTransformParent;
-    public Transform housesTransformParent;
-    public Transform buildingsTransformParent;
-    public Transform skyscrapersTransformParent;
     bool[,] roadMap;
     public Road[,] roadGrid;
 
@@ -205,11 +203,25 @@ public class CityGenerator : MonoBehaviour
         return false;
     }
 
+    Transform GetChunk(int x, int z)
+    {
+        Vector2Int id = new Vector2Int(x / chunkSize, z / chunkSize);
+        if (!chunks.TryGetValue(id, out Transform chunk))
+        {
+            GameObject obj = new GameObject($"Chunk_{id.x}_{id.y}");
+            obj.transform.parent = transform;
+            chunk = obj.transform;
+            chunks.Add(id, chunk);
+        }
+        return chunk;
+    }
+
     void GenerateStreet(int x, int z, bool vertical, Vector3 position)
     {
         float verticalOffset = IsIntersection(x, z) ? verticalOffsetCornerRoad : verticalOffsetRoad;
         GameObject prefab = IsIntersection(x, z) ? intersectionRoadPrefab : roadPrefab;
-        GameObject r = Instantiate(prefab, position + Vector3.up * verticalOffset, Quaternion.identity, streetsTransformParent);
+        Transform chunk = GetChunk(x, z);
+        GameObject r = Instantiate(prefab, position + Vector3.up * verticalOffset, Quaternion.identity, chunk);
         Road road = r.GetComponent<Road>();
         roadGrid[x, z] = road;
         roads.Add(road);
@@ -285,20 +297,22 @@ public class CityGenerator : MonoBehaviour
 
         GameObject obj;
 
+        Transform chunk = GetChunk(x, z);
+
         if (value < 0.4f)
         {
             GameObject randomHouse = SelectRandomHouse();
-            obj = Instantiate(randomHouse, position, rot, housesTransformParent);
+            obj = Instantiate(randomHouse, position, rot, chunk);
         }
         else if (value < 0.7f)
         {
             GameObject randomBuilding = SelectRandomBuilding();
-            obj = Instantiate(randomBuilding, position, rot, buildingsTransformParent);
+            obj = Instantiate(randomBuilding, position, rot, chunk);
         }
         else
         {
             GameObject randomSkyscraper = SelectRandomSkyscraper();
-            obj = Instantiate(randomSkyscraper, position, rot, skyscrapersTransformParent);
+            obj = Instantiate(randomSkyscraper, position, rot, chunk);
         }
 
         Renderer rend = obj.GetComponent<Renderer>();
@@ -466,39 +480,32 @@ public class CityGenerator : MonoBehaviour
 
     public void ResetCity()
     {
-        // Eliminar calles
-        foreach (Road road in roads)
+        StopAllCoroutines();
+
+        // Eliminar todos los chunks
+        foreach (Transform chunk in chunks.Values)
         {
-            Destroy(road.gameObject);
+            Destroy(chunk.gameObject);
         }
 
+        chunks.Clear();
+
+        // Limpiar listas
         roads.Clear();
 
-        // Eliminar edificios
-        foreach (Transform child in housesTransformParent)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (Transform child in buildingsTransformParent)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (Transform child in skyscrapersTransformParent)
-        {
-            Destroy(child.gameObject);
-        }
-
-        // Limpiar datos
+        // Limpiar datos de la ciudad
         verticalStreetNames.Clear();
         horizontalStreetNames.Clear();
         streetNumbers.Clear();
         usedStreetNames.Clear();
         roadAddresses.Clear();
 
+        roadMap = null;
+        roadGrid = null;
 
-        // Regenerar ciudad
+        cityGenerated = false;
+
+        // Regenerar
         StartCoroutine(GenerateCity());
     }
 
@@ -506,14 +513,10 @@ public class CityGenerator : MonoBehaviour
     {
         List<Address> addresses = new();
 
-        addresses.AddRange(
-            housesTransformParent.GetComponentsInChildren<Address>());
-
-        addresses.AddRange(
-            buildingsTransformParent.GetComponentsInChildren<Address>());
-
-        addresses.AddRange(
-            skyscrapersTransformParent.GetComponentsInChildren<Address>());
+        foreach (Transform chunk in chunks.Values)
+        {
+            addresses.AddRange(chunk.GetComponentsInChildren<Address>(true));
+        }
 
         if (addresses.Count == 0)
             return null;

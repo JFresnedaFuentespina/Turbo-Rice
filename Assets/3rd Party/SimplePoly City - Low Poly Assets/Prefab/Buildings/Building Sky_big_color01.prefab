@@ -171,7 +171,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2024286056435540203
 Transform:
   m_ObjectHideFlags: 0
@@ -255,6 +255,10 @@ PrefabInstance:
     - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_Name
       value: Persianas (22)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7982068710108516256, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_LocalScale.x
@@ -478,6 +482,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Persianas (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7982068710108516256, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.88904
@@ -700,6 +708,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Persianas (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7982068710108516256, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.88904
@@ -848,6 +860,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Persianas (18)
       objectReference: {fileID: 0}
+    - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7982068710108516256, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.88904
@@ -921,6 +937,10 @@ PrefabInstance:
     - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_Name
       value: Persianas (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7982068710108516256, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_LocalScale.x
@@ -1366,6 +1386,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Persianas (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7982068710108516256, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.88904
@@ -1588,6 +1612,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Persianas (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7982068710108516256, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.88904
@@ -1662,6 +1690,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Persianas (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7982068710108516256, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.88904
@@ -1735,6 +1767,10 @@ PrefabInstance:
     - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_Name
       value: Persianas (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7982068710108516256, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_LocalScale.x
@@ -1957,6 +1993,10 @@ PrefabInstance:
     - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_Name
       value: Persianas (10)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1050897605767658807, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7982068710108516256, guid: 499d7a8b1edb1204cb98eef56bcb2c31, type: 3}
       propertyPath: m_LocalScale.x
