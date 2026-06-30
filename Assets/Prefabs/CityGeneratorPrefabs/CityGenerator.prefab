@@ -332,7 +332,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ChunkLoader
   cityGenerator: {fileID: 3479113749048824804}
   vehicleEnter: {fileID: 0}
-  renderDistance: 2
+  player: {fileID: 0}
+  renderDistance: 1
 --- !u!114 &5314942966499675627
 MonoBehaviour:
   m_ObjectHideFlags: 0

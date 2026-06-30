@@ -5,25 +5,33 @@ public class ChunkLoader : MonoBehaviour
 {
     public CityGenerator cityGenerator;
     public VehicleEnter vehicleEnter;
-    private Transform player;
+    public Transform player;
     public int renderDistance = 2;
 
-
+    private Vector2Int currentChunk = new(-1, -1);
 
     void Update()
     {
-        FindPlayer();
+        Transform player = vehicleEnter.CurrentTransform;
 
-        int px = Mathf.FloorToInt(player.position.x / cityGenerator.cellSize);
-        int pz = Mathf.FloorToInt(player.position.z / cityGenerator.cellSize);
+        Vector2Int newChunk = new(
+            Mathf.FloorToInt(player.position.x / (cityGenerator.cellSize * cityGenerator.chunkSize)),
+            Mathf.FloorToInt(player.position.z / (cityGenerator.cellSize * cityGenerator.chunkSize))
+        );
 
-        int chunkX = px / cityGenerator.chunkSize;
-        int chunkZ = pz / cityGenerator.chunkSize;
+        if (newChunk == currentChunk)
+            return;
 
+        currentChunk = newChunk;
+
+        UpdateChunks();
+    }
+    void UpdateChunks()
+    {
         foreach (var pair in cityGenerator.chunks)
         {
-            int dx = Math.Abs(pair.Key.x - chunkX);
-            int dz = Math.Abs(pair.Key.y - chunkZ);
+            int dx = Mathf.Abs(pair.Key.x - currentChunk.x);
+            int dz = Mathf.Abs(pair.Key.y - currentChunk.y);
 
             bool active = dx <= renderDistance && dz <= renderDistance;
 
@@ -34,15 +42,4 @@ public class ChunkLoader : MonoBehaviour
         }
     }
 
-    void FindPlayer()
-    {
-        if (vehicleEnter.inCar)
-        {
-            player = GameObject.FindWithTag("Car").transform;
-        }
-        else
-        {
-            player = GameObject.FindWithTag("Player").transform;
-        }
-    }
 }

@@ -10,6 +10,8 @@ public class VehicleEnter : MonoBehaviour
     public MonoBehaviour carController;
     public CinemachineCamera playerCam;
     public CinemachineCamera carCam;
+    public Transform CurrentTransform =>
+        inCar ? carObject.transform : playerObject.transform;
 
     public float interactDistance = 3f;
     public bool inCar = false;
