@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ChunkLoader : MonoBehaviour
@@ -9,10 +11,36 @@ public class ChunkLoader : MonoBehaviour
     public Transform player;
     public int renderDistance = 2;
     private Vector2Int currentChunk = new(-1, -1);
-    private HashSet<Vector2Int> activeChunks = new();
 
+    public bool initialized = false;
+    private readonly HashSet<Vector2Int> desiredChunks = new();
+    private readonly HashSet<Vector2Int> activeChunks = new();
+
+
+    IEnumerator Start()
+    {
+        yield return new WaitUntil(() => cityGenerator.cityGenerated);
+
+        foreach (Transform chunk in cityGenerator.chunks.Values)
+        {
+            chunk.gameObject.SetActive(false);
+        }
+
+        initialized = true;
+
+        Transform player = vehicleEnter.CurrentTransform;
+
+        currentChunk = new Vector2Int(
+            Mathf.FloorToInt(player.position.x / (cityGenerator.cellSize * cityGenerator.chunkSize)),
+            Mathf.FloorToInt(player.position.z / (cityGenerator.cellSize * cityGenerator.chunkSize))
+        );
+
+        UpdateChunks();
+    }
     void Update()
     {
+        if (!initialized) return;
+
         Transform player = vehicleEnter.CurrentTransform;
 
         Vector2Int newChunk = new(
@@ -28,19 +56,17 @@ public class ChunkLoader : MonoBehaviour
     }
     void UpdateChunks()
     {
-        HashSet<Vector2Int> desired = GetDesiredChunks();
+        GetDesiredChunks();
 
-        // Desactivar los que ya no deberían estar
         foreach (Vector2Int chunk in activeChunks)
         {
-            if (!desired.Contains(chunk))
+            if (!desiredChunks.Contains(chunk))
             {
                 cityGenerator.chunks[chunk].gameObject.SetActive(false);
             }
         }
 
-        // Activar los nuevos
-        foreach (Vector2Int chunk in desired)
+        foreach (Vector2Int chunk in desiredChunks)
         {
             if (!activeChunks.Contains(chunk))
             {
@@ -48,12 +74,12 @@ public class ChunkLoader : MonoBehaviour
             }
         }
 
-        activeChunks = desired;
+        activeChunks.Clear();
+        activeChunks.UnionWith(desiredChunks);
     }
-
-    HashSet<Vector2Int> GetDesiredChunks()
+    void GetDesiredChunks()
     {
-        HashSet<Vector2Int> desired = new();
+        desiredChunks.Clear();
 
         for (int x = -renderDistance; x <= renderDistance; x++)
         {
@@ -64,14 +90,14 @@ public class ChunkLoader : MonoBehaviour
                     currentChunk.y + z
                 );
 
+                Debug.Log($"Buscando {chunk} -> {cityGenerator.chunks.ContainsKey(chunk)}");
+
                 if (cityGenerator.chunks.ContainsKey(chunk))
                 {
-                    desired.Add(chunk);
+                    desiredChunks.Add(chunk);
                 }
             }
         }
-
-        return desired;
     }
 
 }

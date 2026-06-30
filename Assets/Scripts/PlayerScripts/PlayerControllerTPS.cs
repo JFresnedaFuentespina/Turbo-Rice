@@ -39,9 +39,13 @@ public class PlayerControllerTPS : MonoBehaviour
             velocityY = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             isRunning = true;
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            isRunning = false;
         }
 
         // DIRECCIÓN RELATIVA A CÁMARA

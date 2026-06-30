@@ -152,6 +152,10 @@ public class CityGenerator : MonoBehaviour
                     yield return null;
             }
         }
+        foreach (var pair in chunks)
+        {
+            Debug.Log(pair.Key);
+        }
         cityGenerated = true;
     }
 
